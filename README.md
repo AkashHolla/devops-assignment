@@ -37,6 +37,11 @@ This repo contains a two-service setup built by a previous engineer. It has seve
 │   └── deployment.yaml
 └── FIXES.md        ← You create this
 ```
+## How to run
+docker compose up --build
+
+## Improvements
+See FIXES.md
 
 ## Deliverables
 
