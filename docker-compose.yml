@@ -1,13 +1,11 @@
-
-
 services:
   service-a:
     build: ./service-a
     ports:
       - "5000:5000"
-    environment:
-      - DB_PASSWORD=admin1234
-      - SECRET_KEY=super-secure-key-123
+    restart: always
+    env_file:
+      - .env
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
       interval: 5s
@@ -16,8 +14,9 @@ services:
 
   service-b:
     build: ./service-b
+    restart: always
     depends_on:
-       service-a:
+      service-a:
         condition: service_healthy
     environment:
       - SERVICE_A_URL=http://service-a:5000
