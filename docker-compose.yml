@@ -1,0 +1,23 @@
+
+
+services:
+  service-a:
+    build: ./service-a
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_PASSWORD=admin1234
+      - SECRET_KEY=super-secure-key-123
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+
+  service-b:
+    build: ./service-b
+    depends_on:
+       service-a:
+        condition: service_healthy
+    environment:
+      - SERVICE_A_URL=http://service-a:5000
