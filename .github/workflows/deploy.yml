@@ -13,14 +13,20 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Docker
+    - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
-    - name: Build Docker image
-      run: docker build -t myapp .
-
     - name: Login to Docker Hub
-      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin  #pls add your docker password and username in the secrets of your repository
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    - name: Push Docker image
-      run: docker push myapp
+    - name: Build service-a image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/service-a ./service-a
+
+    - name: Build service-b image
+      run: docker build -t ${{ secrets.DOCKER_USERNAME }}/service-b ./service-b
+
+    - name: Push service-a image
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/service-a
+
+    - name: Push service-b image
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/service-b
